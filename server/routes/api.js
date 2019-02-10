@@ -33,4 +33,23 @@ router.route('/:id')
     });
   });
 
+/* FIND ALL */
+router.get("/tasks", (req,res) => {
+  console.log(req.query)
+    Task.find(req.query,(err,task) => {
+      if (err){
+        console.log('Error Getting Tasks: ' + err);
+        res.status(500).send('Error');
+      } else if (task) {
+        console.log(task)
+        res.status(200).json(task);
+      } else {
+        res.status(404).send('Not found');
+      }
+    })
+        // .sort({date:-1})
+        // .then(dbTask => res.json(dbTask))
+        // .catch(err => res.status(422).json(err))
+  })
+
 module.exports = router;

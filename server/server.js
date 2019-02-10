@@ -5,11 +5,11 @@ const api = require('./routes/api');
 const Pusher = require('pusher');
 
 const pusher = new Pusher({
-  appId      : 'INSERT_APP_ID',
-  key        : 'INSERT_APP_KEY',
-  secret     : 'INSERT_APP_SECRET',
-  cluster    : 'INSERT_APP_CLUSTER',
-  encrypted  : true,
+  appId: '710110',
+  key: '0a9b71501c34687037ae',
+  secret: '681963cb67e64b88b908',
+  cluster: 'us2',
+  encrypted: true
 });
 const channel = 'tasks';
 
@@ -26,7 +26,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', api);
 
-mongoose.connect('mongodb://localhost/tasksDb?replicaSet=rs');
+const MONGODB_URI = "mongodb://heroku_f50dbbld:2im9bqug2amnj946kggv357ofk@ds329975-a0.mlab.com:29975,ds329975-a1.mlab.com:29975/heroku_f50dbbld?replicaSet=rs-ds329975"
+console.log(MONGODB_URI)
+
+// mongoose.connect('mongodb://localhost/tasksDb?replicaSet=rs');
+mongoose.connect(MONGODB_URI)
+
+pusher.trigger('my-channel', 'my-event', {
+  "message": "hello world"
+});
 
 const db = mongoose.connection;
 
@@ -39,7 +47,7 @@ db.once('open', () => {
 
   const taskCollection = db.collection('tasks');
   const changeStream = taskCollection.watch();
-    
+
   changeStream.on('change', (change) => {
     console.log(change);
       
@@ -59,6 +67,8 @@ db.once('open', () => {
         'deleted', 
         change.documentKey._id
       );
+    } else if (change.operationType){
+      console.log("Connection")
     }
   });
 });
