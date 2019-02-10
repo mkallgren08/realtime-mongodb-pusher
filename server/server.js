@@ -29,8 +29,8 @@ app.use('/api', api);
 const MONGODB_URI = "mongodb://heroku_f50dbbld:2im9bqug2amnj946kggv357ofk@ds329975-a0.mlab.com:29975,ds329975-a1.mlab.com:29975/heroku_f50dbbld?replicaSet=rs-ds329975"
 console.log(MONGODB_URI)
 
-// mongoose.connect('mongodb://localhost/tasksDb?replicaSet=rs');
-mongoose.connect(process.env.MONGODB_URI || MONGODB_URI)
+mongoose.connect('mongodb://localhost/tasksDb?replicaSet=rs');
+// mongoose.connect(process.env.MONGODB_URI || MONGODB_URI)
 
 pusher.trigger('my-channel', 'my-event', {
   "message": "hello world"
