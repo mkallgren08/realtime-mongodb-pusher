@@ -30,7 +30,7 @@ const MONGODB_URI = "mongodb://heroku_f50dbbld:2im9bqug2amnj946kggv357ofk@ds3299
 console.log(MONGODB_URI)
 
 // mongoose.connect('mongodb://localhost/tasksDb?replicaSet=rs');
-mongoose.connect(MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI || MONGODB_URI)
 
 pusher.trigger('my-channel', 'my-event', {
   "message": "hello world"
